@@ -29,14 +29,14 @@ namespace RegisterSystem.Resources
         {
             deformat = deformat.Substring(deformat.IndexOf('x') + 1);
 
-            deformat = deformat.Replace(" ", "");
+            //deformat = deformat.Replace(" ", "");
             deformat = deformat.Replace("\n", "");
             deformat = deformat.Replace(arrow, '/');
 
             if (deformat.Contains('-'))
             {
-                main = deformat.Substring(0, deformat.IndexOf('-'));
-                option = deformat.Substring(deformat.IndexOf('-') + 1, deformat.IndexOf('/') - (deformat.IndexOf('-') + 1));
+                main = deformat.Substring(0, deformat.IndexOf('-')).Replace(" ", "");
+                option = deformat.Substring(deformat.IndexOf('-') + 1, deformat.IndexOf('/') - (deformat.IndexOf('-') + 1)).TrimStart();
                 side = deformat.Substring(deformat.IndexOf('/') + 1);
             }
             else

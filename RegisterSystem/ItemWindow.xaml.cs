@@ -36,7 +36,7 @@ namespace RegisterSystem
             txtData.Text = $"Student: {student}\nTafel: {table}";
 
             WindowState = WindowState.Maximized;
-            WindowStyle = WindowStyle.None;
+            //WindowStyle = WindowStyle.None;
 
             tStudent = student;
             tTable = table;
@@ -203,7 +203,7 @@ namespace RegisterSystem
         private void AddOrder()
         {
             string order = fillOrder.GetOrder();
-
+            MessageBox.Show(order);
             if (orderList.ContainsKey(order))
             {
                 orderList[order] += 1;
@@ -281,7 +281,6 @@ namespace RegisterSystem
         {
             try
             {
-
                 string item = lstItems.SelectedItem.ToString();
 
                 Order fillOrder = new Order(item);
@@ -310,14 +309,6 @@ namespace RegisterSystem
             catch
             {
 
-            }
-        }
-
-        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
-        {
-            if (e.Key == Key.System && e.SystemKey == Key.F4)
-            {
-                Environment.Exit(0);
             }
         }
     }

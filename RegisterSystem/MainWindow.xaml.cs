@@ -22,7 +22,7 @@ namespace RegisterSystem
             SetupButtons();
 
             WindowState = WindowState.Maximized;
-            WindowStyle = WindowStyle.None;
+            //WindowStyle = WindowStyle.None;
         }
 
         public void SetupButtons()

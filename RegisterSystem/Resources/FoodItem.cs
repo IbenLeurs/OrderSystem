@@ -32,7 +32,7 @@ namespace RegisterSystem.Resources
 
             if (split[1] != null && !split[1].Equals(string.Empty))
             {
-                options = split[1].Split(',');
+                options = split[1].Split(',').Select(o => o.TrimStart()).ToArray();
             }
 
             if (split[2].Contains(','))
