@@ -12,6 +12,7 @@ namespace RegisterSystem.Resources
     {
         private string path = "Files/";
         private string ticketPath = "Tickets/";
+        private string errorPath = "Errors/";
         private string studentFile = "StudentenID.txt";
         private string menuFile = "Menu.txt";
         private string tableFile = "Tafels.txt";
@@ -21,6 +22,7 @@ namespace RegisterSystem.Resources
         public void SetupFiles()
         {
             ticketPath = ValidateStorage(ticketPath);
+            errorPath = ValidateStorage(errorPath);
 
             studentFile = ValidateStorageLocation(studentFile);
             SetupStudentFile(studentFile);

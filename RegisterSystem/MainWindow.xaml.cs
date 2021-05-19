@@ -53,6 +53,7 @@ namespace RegisterSystem
                 int tableNr = Convert.ToInt32(text.Substring(text.IndexOf(' ')));
                 
                 new ItemWindow(tableNr, student.StudentID, this).Show();
+                Hide();
 
             }
         }

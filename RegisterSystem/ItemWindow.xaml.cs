@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace RegisterSystem
 {
@@ -21,6 +22,9 @@ namespace RegisterSystem
         private FileSetup fs = new FileSetup();
         private bool switchCancel = true;
 
+        private string tStudent;
+        private int tTable;
+
         public ItemWindow(int table, string student, Window window)
         {
             InitializeComponent();
@@ -33,6 +37,9 @@ namespace RegisterSystem
 
             WindowState = WindowState.Maximized;
             WindowStyle = WindowStyle.None;
+
+            tStudent = student;
+            tTable = table;
         }
 
         private void SetupButtons()
@@ -70,6 +77,17 @@ namespace RegisterSystem
         {
             int counter = 0;
             Button[] buttons = optionButtons.GetButtons();
+            
+            if (main.GetOptions() == null)
+            {
+                fillOrder.SetOption("");
+                SetupSide(main);
+
+                optionButtons.SetInvisible();
+                sideButtons.SetVisible();
+
+                return;
+            }
 
             foreach (string o in main.GetOptions())
             {
@@ -79,6 +97,7 @@ namespace RegisterSystem
                     buttons[counter].Click += OptionSelected;
                     buttons[counter].IsEnabled = true;
                 }
+
                 counter++;
             }
 
@@ -88,12 +107,12 @@ namespace RegisterSystem
                 buttons[i].IsEnabled = false;
             }
 
-            if (counter == 0)
-            {
-                fillOrder.SetOption("");
-                optionButtons.SetInvisible();
-                sideButtons.SetVisible();
-            }
+            //if (counter == 0)
+            //{
+            //    fillOrder.SetOption("");
+            //    optionButtons.SetInvisible();
+            //    sideButtons.SetVisible();
+            //}
         }
 
         private void SetupSide(FoodItem main)
@@ -132,13 +151,13 @@ namespace RegisterSystem
             {
                 btnCancel.IsEnabled = false;
                 btnCancel.Visibility = Visibility.Collapsed;
-                //btnDelete.Visibility = Visibility.Visible;
-
-                btnFinish.IsEnabled = true;
-
+                btnDelete.Visibility = Visibility.Visible;
+                
                 switchCancel = false;
             }
 
+            btnFinish.IsEnabled = false;
+            btnDelete.IsEnabled = false;
 
             fillOrder = new Order();
 
@@ -148,10 +167,10 @@ namespace RegisterSystem
 
             curMain = mHandler.GetItem(pos);
 
-            SetupOption(curMain);
-
             mainButtons.SetInvisible();
             optionButtons.SetVisible();
+
+            SetupOption(curMain);
         }
 
         private void OptionSelected(object sender, RoutedEventArgs e)
@@ -173,6 +192,9 @@ namespace RegisterSystem
             sideButtons.SetInvisible();
             mainButtons.SetVisible();
 
+            btnDelete.IsEnabled = true;
+            btnFinish.IsEnabled = true;
+
             AddOrder();
 
             e.Handled = true;
@@ -192,8 +214,10 @@ namespace RegisterSystem
             else
             {
                 orderList.Add(order, 1);
-
                 string fOrder = $"{orderList[order]}x {fillOrder.FormatedOrder()}";
+                //ListBoxItem fOrder = new ListBoxItem();
+                //fOrder.Content = $"{orderList[order]}x {fillOrder.FormatedOrder()}";
+                //fOrder.Selected += OnSelect;
 
                 lstItems.Items.Add(fOrder);
             }
@@ -215,12 +239,32 @@ namespace RegisterSystem
             lstItems.Items.Insert(i, newText);
         }
 
+        private void UpdateItem(string newText)
+        {
+            int i = lstItems.SelectedIndex;
+
+            lstItems.Items.RemoveAt(i);
+            lstItems.Items.Insert(i, newText);
+        }
+
+        private void OnSelect(object sender, RoutedEventArgs e)
+        {
+            btnDelete.IsEnabled = true;
+        }
+
+        private void DelItem()
+        {
+            int i = lstItems.SelectedIndex;
+
+            lstItems.Items.RemoveAt(i);
+        }
+
         private void BtnFinish_Click(object sender, RoutedEventArgs e)
         {
-            string time = $"{DateTime.Now.TimeOfDay.Hours}.{DateTime.Now.TimeOfDay.Minutes}";
+            string time = $"{DateTime.Now.TimeOfDay.Hours}u{DateTime.Now.TimeOfDay.Minutes} - T{6} {tStudent}";
 
             string fileName = $"{fs.GetTicketPath()}{time}.txt";
-            string text = "";
+            string text = $"Ontvangen: {DateTime.Now.TimeOfDay.Hours}u{DateTime.Now.TimeOfDay.Minutes}\nTafel: {tTable}\nStudent: {tStudent}\n-------------\n\n";
 
             foreach(object o in lstItems.Items)
             {
@@ -229,32 +273,52 @@ namespace RegisterSystem
 
             File.WriteAllText(fileName, text);
 
+            preWindow.Show();
             Close();
         }
 
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
-            string item = lstItems.SelectedItem.ToString();
+            try
+            {
 
-            MessageBox.Show(item.ToString());
+                string item = lstItems.SelectedItem.ToString();
 
-            //string order = fillOrder.GetOrder();
+                Order fillOrder = new Order(item);
 
-            //if (orderList.ContainsKey(order))
-            //{
-            //    orderList[order] += 1;
+                string order = fillOrder.GetOrder();
 
-            //    string fOrder = $"{orderList[order]}x {fillOrder.FormatedOrder()}";
-            //    GetItem($"{orderList[order] - 1}x {fillOrder.FormatedOrder()}", fOrder);
-            //}
-            //else
-            //{
-            //    orderList.Add(order, 1);
+                if (orderList.ContainsKey(order))
+                {
+                    orderList[order] -= 1;
 
-            //    string fOrder = $"{orderList[order]}x {fillOrder.FormatedOrder()}";
+                    if (orderList[order] <= 0)
+                    {
+                        orderList.Remove(order);
 
-            //    lstItems.Items.Add(fOrder);
-            //}
+                        DelItem();
+                    }
+                    else
+                    {
+                        string fOrder = $"{orderList[order]}x {fillOrder.FormatedOrder()}";
+                        UpdateItem(fOrder);
+                    }
+                }
+
+                e.Handled = true;
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.System && e.SystemKey == Key.F4)
+            {
+                Environment.Exit(0);
+            }
         }
     }
 }

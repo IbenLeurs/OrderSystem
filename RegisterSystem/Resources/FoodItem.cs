@@ -30,14 +30,23 @@ namespace RegisterSystem.Resources
 
             main = split[0];
 
-            if (!split[1].Equals(string.Empty))
+            if (split[1] != null && !split[1].Equals(string.Empty))
             {
                 options = split[1].Split(',');
             }
 
-            if (!split[2].Equals(string.Empty))
+            if (split[2].Contains(','))
             {
                 sides = split[2].Split(',');
+
+                for(int i = 0; i < sides.Length; i++)
+                {
+                    sides[i] = sides[i].Trim();
+                }
+            }
+            else
+            {
+                sides = new string[] { split[2] };
             }
         }
 

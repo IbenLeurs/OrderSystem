@@ -25,6 +25,27 @@ namespace RegisterSystem.Resources
             side = s;
         }
 
+        public Order(string deformat)
+        {
+            deformat = deformat.Substring(deformat.IndexOf('x') + 1);
+
+            deformat = deformat.Replace(" ", "");
+            deformat = deformat.Replace("\n", "");
+            deformat = deformat.Replace(arrow, '/');
+
+            if (deformat.Contains('-'))
+            {
+                main = deformat.Substring(0, deformat.IndexOf('-'));
+                option = deformat.Substring(deformat.IndexOf('-') + 1, deformat.IndexOf('/') - (deformat.IndexOf('-') + 1));
+                side = deformat.Substring(deformat.IndexOf('/') + 1);
+            }
+            else
+            {
+                main = deformat.Substring(0, deformat.IndexOf('/'));
+                side = deformat.Substring(deformat.IndexOf('/') + 1);
+            }
+        }
+
         public void SetMain(string m)
         {
             main = m;
