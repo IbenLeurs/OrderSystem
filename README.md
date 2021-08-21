@@ -1,2 +1,2 @@
-# RegisterSystem
-Registersystem which can be used for training
+# OrderSystem
+An ordersystem which can be used to train new cheffs to work with one.
