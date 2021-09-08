@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RegisterSystem.Properties
+namespace OrderSystem.Properties
 {
 
 

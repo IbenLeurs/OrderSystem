@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace RegisterSystem.Resources
+namespace OrderSystem.Classes
 {
     public class ButtonMatrix
     {
@@ -49,7 +48,7 @@ namespace RegisterSystem.Resources
 
         public void SetInvisible()
         {
-            foreach(Button b in buttons)
+            foreach (Button b in buttons)
             {
                 b.Visibility = Visibility.Hidden;
                 //b.IsEnabled = false;
@@ -58,7 +57,7 @@ namespace RegisterSystem.Resources
 
         public void SetVisible()
         {
-            foreach(Button b in buttons)
+            foreach (Button b in buttons)
             {
                 b.Visibility = Visibility.Visible;
                 //b.IsEnabled = true;

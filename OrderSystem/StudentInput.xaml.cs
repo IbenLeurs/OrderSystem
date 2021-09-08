@@ -1,24 +1,35 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
-using RegisterSystem.Resources;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using OrderSystem.Classes;
 
-namespace RegisterSystem
+namespace OrderSystem
 {
+    /// <summary>
+    /// Interaction logic for StudentInput.xaml
+    /// </summary>
     public partial class StudentInput : Window
     {
-        private StudentHandler sHandler;
         private List<string> students;
 
         public StudentInput()
         {
             InitializeComponent();
 
-            sHandler = new StudentHandler();
-            students = sHandler.GetList();
+            students = new DataHandler().GetStudentList();
             ResponseTextBox.Focus();
             btnOkay.IsDefault = true;
-    }
+        }
 
         public string StudentID
         {
@@ -28,7 +39,8 @@ namespace RegisterSystem
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-            if (students.Contains(ResponseTextBox.Text)) {
+            if (students.Contains(ResponseTextBox.Text))
+            {
                 DialogResult = true;
             }
             else

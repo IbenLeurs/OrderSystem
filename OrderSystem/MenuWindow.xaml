@@ -1,0 +1,40 @@
+﻿<Window x:Class="OrderSystem.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OrderSystem"
+        mc:Ignorable="d"
+        Title="MenuWindow" Height="450" Width="800">
+    <Grid Name="MenuGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock x:Name="txtData" Margin="5" Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="3" FontSize="30" TextAlignment="Center" />
+        <ListBox x:Name="lstItems" Margin="5" Grid.Row="1" Grid.RowSpan="8" Grid.Column="5" Grid.ColumnSpan="3" FontSize="24" />
+        <Button x:Name="btnBack" Margin="5" Grid.Row="9" Grid.Column="5" Background="LightSkyBlue" Content="Back" FontSize="20" FontWeight="Bold" FontStyle="Italic" IsEnabled="False"/>
+        <Button x:Name="btnCancel" Margin="5" Grid.Row="9" Grid.Column="6" Background="IndianRed" Content="Cancel" FontSize="20" FontStyle="Italic" FontWeight="Bold" IsCancel="True" Click="CancelOrder"/>
+        <Button x:Name="btnDelete" Margin="5" Grid.Row="9" Grid.Column="6" Background="IndianRed" Content="Delete" FontSize="20" FontStyle="Italic" FontWeight="Bold" Visibility="Hidden" Click="BtnDelete_Click"/>
+        <Button x:Name="btnFinish" Margin="5" Grid.Row="9" Grid.Column="7" Background="LightGreen" Content="Finish" FontSize="20" FontWeight="Bold" FontStyle="Italic" IsEnabled="False" Click="BtnFinish_Click" />
+    </Grid>
+</Window>

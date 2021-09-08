@@ -1,37 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
-namespace RegisterSystem.Resources
+namespace OrderSystem.Classes
 {
     public class FileSetup
     {
         private string path = "Files/";
-        private string ticketPath = "Tickets/";
-        private string errorPath = "Errors/";
+        private string ticketFolder = "Tickets/";
+        private string errorFolder = "Errors/";
+        private string menuFolder = "Menu/";
+
+        private string catergory = "Category.txt";
         private string studentFile = "StudentenID.txt";
-        private string menuFile = "Menu.txt";
         private string tableFile = "Tafels.txt";
 
         private bool closeApp = false;
+        private List<string> list = new List<string>(0);
 
         public void SetupFiles()
         {
-            ticketPath = ValidateStorage(ticketPath);
-            errorPath = ValidateStorage(errorPath);
+            ticketFolder = ValidateFolder(ticketFolder);
+            errorFolder = ValidateFolder(errorFolder);
+            menuFolder = ValidateFolder(menuFolder);
 
-            studentFile = ValidateStorageLocation(studentFile);
-            SetupStudentFile(studentFile);
+            //studentFile = ValidateFile(studentFile);
+            ValidateFile($"{path}{studentFile}", "Plaats hier de ID voor elke student op een aparte regel.\n");
 
-            menuFile = ValidateStorageLocation(menuFile);
-            SetupMenuFile(menuFile);
-
-            tableFile = ValidateStorageLocation(tableFile);
-            SetupTableFile(tableFile);
+            //tableFile = ValidateFile(tableFile);
+            ValidateFile($"{path}{tableFile}", TableMatrixText());
 
             if (closeApp)
             {
@@ -40,7 +38,7 @@ namespace RegisterSystem.Resources
             }
         }
 
-        private string ValidateStorage(string location)
+        private string ValidateFolder(string location)
         {
             if (!Directory.Exists($"{path}{location}"))
             {
@@ -52,7 +50,7 @@ namespace RegisterSystem.Resources
             return $"{path}{location}";
         }
 
-        private string ValidateStorageLocation(string file)
+        private void ValidateFile(string file, string text)
         {
             if (!Directory.Exists(path))
             {
@@ -61,10 +59,22 @@ namespace RegisterSystem.Resources
                 closeApp = true;
             }
 
-            return $"{path}{file}";
+            if (File.Exists(file))
+            {
+                return;
+            }
+
+
+            string fileText = "";
+
+            fileText += text;
+
+            File.WriteAllText(file, fileText);
+
+            closeApp = true;
         }
 
-        private void SetupStudentFile(string file)
+        private void SetupCatFile(string file)
         {
             if (File.Exists(file))
             {
@@ -73,7 +83,33 @@ namespace RegisterSystem.Resources
 
             string fileText = "";
 
-            fileText += "Plaats hier de ID voor elke student op een aparte regel.\n";
+            foreach(string s in list)
+            {
+                fileText += $"{s}\n";
+            }
+
+            File.WriteAllText(file, fileText);
+
+            closeApp = true;
+        }
+
+        private void SetupMainDishFile(string file)
+        {
+            if (File.Exists(file))
+            {
+                return;
+            }
+
+            string fileText = "";
+
+            fileText += "Plaats op elke regel een hoofdgerecht in het volgende formaat: Hoofdgerecht;Optie 1, Optie 2\n(Opties zijn enkel nodig indien er verschillende bereidingswijzes zijn, max. 50 items)";
+
+            //for(int i = 0; i < 50; i++)
+            //{
+            //    fileText += $"\n";
+            //}
+
+            //fileText += $"---Max # Gerechten---";
 
             File.WriteAllText(file, fileText);
 
@@ -89,7 +125,7 @@ namespace RegisterSystem.Resources
 
             string fileText = "";
 
-            fileText += "Plaats op elke regel een menuitem in het volgende formaat:\nMain;Optie1,...;Side1,...\n";
+            fileText += "Plaats op elke regel een menuitem.\nLet op, gebruik maar 1 item per regel (Max. 50 items).";
 
             //for(int i = 0; i < 50; i++)
             //{
@@ -97,19 +133,14 @@ namespace RegisterSystem.Resources
             //}
 
             //fileText += $"---Max # Gerechten---";
-            
+
             File.WriteAllText(file, fileText);
 
             closeApp = true;
         }
 
-        private void SetupTableFile(string file)
+        private string TableMatrixText()
         {
-            if (File.Exists(file))
-            {
-                return;
-            }
-
             string fileText = "";
 
             fileText += "Deze matrix vertegenwoordigd de tafels.\nVol het tafelnummer in tussen de [].\nLege [] zullen worden geinterpreteerd als niet beschikbare tafels.\n";
@@ -124,13 +155,11 @@ namespace RegisterSystem.Resources
                         fileText += " ";
                 }
 
-                if(i != 3)
+                if (i != 3)
                     fileText += "\n";
             }
 
-            File.WriteAllText(file, fileText);
-
-            closeApp = true;
+            return fileText;
         }
 
         public string GetTableFile()
@@ -143,14 +172,9 @@ namespace RegisterSystem.Resources
             return $"{path}{studentFile}";
         }
 
-        public string GetMenuFile()
-        {
-            return $"{path}{menuFile}";
-        }
-
         public string GetTicketPath()
         {
-            return $"{path}{ticketPath}";
+            return $"{path}{ticketFolder}";
         }
     }
 }
